@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageSquareWarning, BarChart3, Award, Users, CheckCircle, Clock, AlertCircle, QrCode } from 'lucide-react';
+import { MessageSquareWarning, BarChart3, Award, Users, CheckCircle, Clock, AlertCircle, QrCode, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -139,6 +139,17 @@ const Home = () => {
               <QrCode className="mr-2" size={20} />
               QR Code
             </Button>
+
+            <Link to="/stats">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white text-white hover:bg-white hover:text-orange-500 font-semibold px-8 py-3"
+              >
+                <TrendingUp className="mr-2" size={20} />
+                สถิติชุมชน
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

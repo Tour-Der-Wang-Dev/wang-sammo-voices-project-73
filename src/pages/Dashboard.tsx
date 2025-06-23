@@ -5,10 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { BarChart3, Filter, MessageSquareWarning, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { BarChart3, Filter, MessageSquareWarning, CheckCircle, Clock, AlertCircle, QrCode, TrendingUp } from 'lucide-react';
+import QRCodeManager from '@/components/QRCodeManager';
+import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 
 type ComplaintStatus = 'open' | 'in_progress' | 'resolved' | 'closed';
 type ComplaintCategory = 'road' | 'water' | 'waste' | 'electricity' | 'public_safety' | 'environment' | 'other';
@@ -159,158 +162,185 @@ const Dashboard = () => {
           <p className="text-gray-600">จัดการเรื่องร้องเรียนของชุมชนวังสามหมอ</p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">ทั้งหมด</p>
-                  <p className="text-2xl font-bold">{stats.total}</p>
-                </div>
-                <MessageSquareWarning className="text-blue-500" size={24} />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">รอดำเนินการ</p>
-                  <p className="text-2xl font-bold text-red-600">{stats.open}</p>
-                </div>
-                <AlertCircle className="text-red-500" size={24} />
-              </div>
-            </CardContent>
-          </Card>
+        <Tabs defaultValue="complaints" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="complaints" className="flex items-center space-x-2">
+              <MessageSquareWarning size={16} />
+              <span>เรื่องร้องเรียน</span>
+            </TabsTrigger>
+            <TabsTrigger value="qr-codes" className="flex items-center space-x-2">
+              <QrCode size={16} />
+              <span>QR Code</span>
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center space-x-2">
+              <TrendingUp size={16} />
+              <span>การวิเคราะห์</span>
+            </TabsTrigger>
+          </TabsList>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">กำลังดำเนินการ</p>
-                  <p className="text-2xl font-bold text-yellow-600">{stats.inProgress}</p>
-                </div>
-                <Clock className="text-yellow-500" size={24} />
-              </div>
-            </CardContent>
-          </Card>
+          <TabsContent value="complaints" className="space-y-6">
+            {/* Stats Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-600">ทั้งหมด</p>
+                      <p className="text-2xl font-bold">{stats.total}</p>
+                    </div>
+                    <MessageSquareWarning className="text-blue-500" size={24} />
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-600">รอดำเนินการ</p>
+                      <p className="text-2xl font-bold text-red-600">{stats.open}</p>
+                    </div>
+                    <AlertCircle className="text-red-500" size={24} />
+                  </div>
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">แก้ไขแล้ว</p>
-                  <p className="text-2xl font-bold text-green-600">{stats.resolved}</p>
-                </div>
-                <CheckCircle className="text-green-500" size={24} />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-600">กำลังดำเนินการ</p>
+                      <p className="text-2xl font-bold text-yellow-600">{stats.inProgress}</p>
+                    </div>
+                    <Clock className="text-yellow-500" size={24} />
+                  </div>
+                </CardContent>
+              </Card>
 
-        {/* Filters */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Filter size={20} />
-              <span>ตัวกรอง</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">สถานะ</label>
-                <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as ComplaintStatus | 'all')}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">ทั้งหมด</SelectItem>
-                    <SelectItem value="open">รอดำเนินการ</SelectItem>
-                    <SelectItem value="in_progress">กำลังดำเนินการ</SelectItem>
-                    <SelectItem value="resolved">แก้ไขแล้ว</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">ประเภท</label>
-                <Select value={categoryFilter} onValueChange={(value) => setCategoryFilter(value as ComplaintCategory | 'all')}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">ทั้งหมด</SelectItem>
-                    <SelectItem value="road">ถนน</SelectItem>
-                    <SelectItem value="water">น้ำประปา</SelectItem>
-                    <SelectItem value="waste">ขยะ</SelectItem>
-                    <SelectItem value="electricity">ไฟฟ้า</SelectItem>
-                    <SelectItem value="public_safety">ความปลอดภัย</SelectItem>
-                    <SelectItem value="environment">สิ่งแวดล้อม</SelectItem>
-                    <SelectItem value="other">อื่นๆ</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-600">แก้ไขแล้ว</p>
+                      <p className="text-2xl font-bold text-green-600">{stats.resolved}</p>
+                    </div>
+                    <CheckCircle className="text-green-500" size={24} />
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-          </CardContent>
-        </Card>
 
-        {/* Complaints Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle>รายการเรื่องร้องเรียน</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>รหัส</TableHead>
-                    <TableHead>ประเภท</TableHead>
-                    <TableHead>หัวข้อ</TableHead>
-                    <TableHead>สถานะ</TableHead>
-                    <TableHead>วันที่</TableHead>
-                    <TableHead>การดำเนินการ</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {complaints.map((complaint) => (
-                    <TableRow key={complaint.id}>
-                      <TableCell className="font-mono">
-                        {complaint.complaint_id}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center space-x-2">
-                          <span>{getCategoryIcon(complaint.category)}</span>
-                          <span className="capitalize">{complaint.category}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="max-w-xs truncate">
-                        {complaint.title || complaint.description}
-                      </TableCell>
-                      <TableCell>
-                        {getStatusBadge(complaint.status)}
-                      </TableCell>
-                      <TableCell>
-                        {new Date(complaint.created_at).toLocaleDateString('th-TH')}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          size="sm"
-                          onClick={() => setSelectedComplaint(complaint)}
-                        >
-                          จัดการ
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+            {/* Filters */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Filter size={20} />
+                  <span>ตัวกรอง</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">สถานะ</label>
+                    <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as ComplaintStatus | 'all')}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">ทั้งหมด</SelectItem>
+                        <SelectItem value="open">รอดำเนินการ</SelectItem>
+                        <SelectItem value="in_progress">กำลังดำเนินการ</SelectItem>
+                        <SelectItem value="resolved">แก้ไขแล้ว</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">ประเภท</label>
+                    <Select value={categoryFilter} onValueChange={(value) => setCategoryFilter(value as ComplaintCategory | 'all')}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">ทั้งหมด</SelectItem>
+                        <SelectItem value="road">ถนน</SelectItem>
+                        <SelectItem value="water">น้ำประปา</SelectItem>
+                        <SelectItem value="waste">ขยะ</SelectItem>
+                        <SelectItem value="electricity">ไฟฟ้า</SelectItem>
+                        <SelectItem value="public_safety">ความปลอดภัย</SelectItem>
+                        <SelectItem value="environment">สิ่งแวดล้อม</SelectItem>
+                        <SelectItem value="other">อื่นๆ</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Complaints Table */}
+            <Card>
+              <CardHeader>
+                <CardTitle>รายการเรื่องร้องเรียน</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>รหัส</TableHead>
+                        <TableHead>ประเภท</TableHead>
+                        <TableHead>หัวข้อ</TableHead>
+                        <TableHead>สถานะ</TableHead>
+                        <TableHead>วันที่</TableHead>
+                        <TableHead>การดำเนินการ</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {complaints.map((complaint) => (
+                        <TableRow key={complaint.id}>
+                          <TableCell className="font-mono">
+                            {complaint.complaint_id}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center space-x-2">
+                              <span>{getCategoryIcon(complaint.category)}</span>
+                              <span className="capitalize">{complaint.category}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="max-w-xs truncate">
+                            {complaint.title || complaint.description}
+                          </TableCell>
+                          <TableCell>
+                            {getStatusBadge(complaint.status)}
+                          </TableCell>
+                          <TableCell>
+                            {new Date(complaint.created_at).toLocaleDateString('th-TH')}
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              size="sm"
+                              onClick={() => setSelectedComplaint(complaint)}
+                            >
+                              จัดการ
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="qr-codes">
+            <QRCodeManager />
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <AnalyticsDashboard />
+          </TabsContent>
+        </Tabs>
 
         {/* Complaint Detail Modal */}
         {selectedComplaint && (
