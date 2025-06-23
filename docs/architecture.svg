@@ -1,0 +1,238 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font: bold 16px sans-serif; fill: #1f2937; }
+      .subtitle { font: 12px sans-serif; fill: #4b5563; }
+      .component { font: 11px sans-serif; fill: #374151; }
+      .frontend { fill: #ddd6fe; stroke: #8b5cf6; stroke-width: 2; }
+      .backend { fill: #d1fae5; stroke: #10b981; stroke-width: 2; }
+      .database { fill: #fef3c7; stroke: #f59e0b; stroke-width: 2; }
+      .external { fill: #fed7d7; stroke: #ef4444; stroke-width: 2; }
+      .flow { stroke: #6b7280; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .auth-flow { stroke: #8b5cf6; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .data-flow { stroke: #10b981; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="30" class="title" text-anchor="middle">Wang Sammo Complaint Management System - Architecture</text>
+  
+  <!-- Frontend Layer -->
+  <rect x="50" y="60" width="300" height="400" class="frontend" rx="10"/>
+  <text x="200" y="80" class="subtitle" text-anchor="middle">Frontend Layer (React)</text>
+  
+  <!-- Pages -->
+  <rect x="70" y="100" width="80" height="40" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="110" y="125" class="component" text-anchor="middle">Home</text>
+  
+  <rect x="160" y="100" width="80" height="40" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="200" y="125" class="component" text-anchor="middle">Report</text>
+  
+  <rect x="250" y="100" width="80" height="40" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="290" y="125" class="component" text-anchor="middle">Dashboard</text>
+  
+  <rect x="70" y="150" width="80" height="40" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="110" y="175" class="component" text-anchor="middle">Auth</text>
+  
+  <rect x="160" y="150" width="80" height="40" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="200" y="175" class="component" text-anchor="middle">Profile</text>
+  
+  <rect x="250" y="150" width="80" height="40" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="290" y="175" class="component" text-anchor="middle">PublicStats</text>
+
+  <!-- Core Components -->
+  <text x="200" y="215" class="subtitle" text-anchor="middle">Core Components</text>
+  
+  <rect x="70" y="225" width="100" height="30" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="120" y="245" class="component" text-anchor="middle">ComplaintForm</text>
+  
+  <rect x="180" y="225" width="100" height="30" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="230" y="245" class="component" text-anchor="middle">QRCodeManager</text>
+  
+  <rect x="70" y="265" width="100" height="30" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="120" y="285" class="component" text-anchor="middle">Navigation</text>
+  
+  <rect x="180" y="265" width="120" height="30" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="240" y="285" class="component" text-anchor="middle">AnalyticsDashboard</text>
+
+  <!-- Context & Hooks -->
+  <text x="200" y="315" class="subtitle" text-anchor="middle">State Management</text>
+  
+  <rect x="70" y="325" width="120" height="30" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="130" y="345" class="component" text-anchor="middle">LanguageContext</text>
+  
+  <rect x="200" y="325" width="100" height="30" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="250" y="345" class="component" text-anchor="middle">React Query</text>
+
+  <!-- UI Components -->
+  <text x="200" y="375" class="subtitle" text-anchor="middle">UI Library (Shadcn/UI)</text>
+  <rect x="70" y="385" width="260" height="60" fill="white" stroke="#8b5cf6" rx="5"/>
+  <text x="200" y="420" class="component" text-anchor="middle">Button, Card, Input, Select, Dialog, Toast, Form, etc.</text>
+
+  <!-- Backend Layer -->
+  <rect x="450" y="60" width="300" height="400" class="backend" rx="10"/>
+  <text x="600" y="80" class="subtitle" text-anchor="middle">Backend Layer (Supabase)</text>
+
+  <!-- Authentication -->
+  <rect x="470" y="100" width="100" height="40" fill="white" stroke="#10b981" rx="5"/>
+  <text x="520" y="115" class="component" text-anchor="middle">Authentication</text>
+  <text x="520" y="130" class="component" text-anchor="middle">(Email/Password)</text>
+
+  <!-- API Endpoints -->
+  <text x="600" y="160" class="subtitle" text-anchor="middle">API Endpoints</text>
+  
+  <rect x="470" y="170" width="80" height="30" fill="white" stroke="#10b981" rx="5"/>
+  <text x="510" y="190" class="component" text-anchor="middle">Complaints</text>
+  
+  <rect x="560" y="170" width="80" height="30" fill="white" stroke="#10b981" rx="5"/>
+  <text x="600" y="190" class="component" text-anchor="middle">Users</text>
+  
+  <rect x="650" y="170" width="80" height="30" fill="white" stroke="#10b981" rx="5"/>
+  <text x="690" y="190" class="component" text-anchor="middle">Analytics</text>
+
+  <!-- Real-time Features -->
+  <rect x="470" y="220" width="120" height="30" fill="white" stroke="#10b981" rx="5"/>
+  <text x="530" y="240" class="component" text-anchor="middle">Real-time Updates</text>
+  
+  <rect x="610" y="220" width="120" height="30" fill="white" stroke="#10b981" rx="5"/>
+  <text x="670" y="240" class="component" text-anchor="middle">File Storage</text>
+
+  <!-- Row Level Security -->
+  <rect x="470" y="270" width="260" height="40" fill="white" stroke="#10b981" rx="5"/>
+  <text x="600" y="285" class="component" text-anchor="middle">Row Level Security (RLS)</text>
+  <text x="600" y="300" class="component" text-anchor="middle">Data Access Control</text>
+
+  <!-- Edge Functions -->
+  <rect x="470" y="320" width="120" height="30" fill="white" stroke="#10b981" rx="5"/>
+  <text x="530" y="340" class="component" text-anchor="middle">Edge Functions</text>
+  
+  <rect x="610" y="320" width="120" height="30" fill="white" stroke="#10b981" rx="5"/>
+  <text x="670" y="340" class="component" text-anchor="middle">Database Triggers</text>
+
+  <!-- Webhooks -->
+  <rect x="470" y="370" width="100" height="30" fill="white" stroke="#10b981" rx="5"/>
+  <text x="520" y="390" class="component" text-anchor="middle">Webhooks</text>
+  
+  <rect x="590" y="370" width="140" height="30" fill="white" stroke="#10b981" rx="5"/>
+  <text x="660" y="390" class="component" text-anchor="middle">Background Jobs</text>
+
+  <!-- Database Layer -->
+  <rect x="850" y="60" width="300" height="400" class="database" rx="10"/>
+  <text x="1000" y="80" class="subtitle" text-anchor="middle">Database Layer (PostgreSQL)</text>
+
+  <!-- Tables -->
+  <text x="1000" y="110" class="subtitle" text-anchor="middle">Tables</text>
+  
+  <rect x="870" y="120" width="100" height="50" fill="white" stroke="#f59e0b" rx="5"/>
+  <text x="920" y="135" class="component" text-anchor="middle">complaints</text>
+  <text x="920" y="150" class="component" text-anchor="middle">🔑 id, title, description</text>
+  <text x="920" y="165" class="component" text-anchor="middle">status, category</text>
+
+  <rect x="980" y="120" width="100" height="50" fill="white" stroke="#f59e0b" rx="5"/>
+  <text x="1030" y="135" class="component" text-anchor="middle">users</text>
+  <text x="1030" y="150" class="component" text-anchor="middle">🔑 id, email</text>
+  <text x="1030" y="165" class="component" text-anchor="middle">role, created_at</text>
+
+  <rect x="1090" y="120" width="100" height="50" fill="white" stroke="#f59e0b" rx="5"/>
+  <text x="1140" y="135" class="component" text-anchor="middle">files</text>
+  <text x="1140" y="150" class="component" text-anchor="middle">🔑 id, complaint_id</text>
+  <text x="1140" y="165" class="component" text-anchor="middle">file_path, type</text>
+
+  <!-- Indexes -->
+  <text x="1000" y="195" class="subtitle" text-anchor="middle">Indexes & Constraints</text>
+  <rect x="870" y="205" width="260" height="40" fill="white" stroke="#f59e0b" rx="5"/>
+  <text x="1000" y="220" class="component" text-anchor="middle">📊 Performance Indexes on status, category, created_at</text>
+  <text x="1000" y="235" class="component" text-anchor="middle">🔒 Foreign Key Constraints</text>
+
+  <!-- Views -->
+  <text x="1000" y="265" class="subtitle" text-anchor="middle">Views & Functions</text>
+  <rect x="870" y="275" width="120" height="30" fill="white" stroke="#f59e0b" rx="5"/>
+  <text x="930" y="295" class="component" text-anchor="middle">complaint_stats</text>
+  
+  <rect x="1010" y="275" width="120" height="30" fill="white" stroke="#f59e0b" rx="5"/>
+  <text x="1070" y="295" class="component" text-anchor="middle">analytics_view</text>
+
+  <!-- RLS Policies -->
+  <text x="1000" y="325" class="subtitle" text-anchor="middle">Security Policies</text>
+  <rect x="870" y="335" width="260" height="50" fill="white" stroke="#f59e0b" rx="5"/>
+  <text x="1000" y="350" class="component" text-anchor="middle">🛡️ Row Level Security Policies</text>
+  <text x="1000" y="365" class="component" text-anchor="middle">User can only access own complaints</text>
+  <text x="1000" y="380" class="component" text-anchor="middle">Admins can access all data</text>
+
+  <!-- External Services -->
+  <rect x="50" y="500" width="300" height="120" class="external" rx="10"/>
+  <text x="200" y="520" class="subtitle" text-anchor="middle">External Services</text>
+
+  <rect x="70" y="535" width="100" height="30" fill="white" stroke="#ef4444" rx="5"/>
+  <text x="120" y="555" class="component" text-anchor="middle">QR Server API</text>
+
+  <rect x="180" y="535" width="100" height="30" fill="white" stroke="#ef4444" rx="5"/>
+  <text x="230" y="555" class="component" text-anchor="middle">Email Service</text>
+
+  <rect x="70" y="575" width="100" height="30" fill="white" stroke="#ef4444" rx="5"/>
+  <text x="120" y="595" class="component" text-anchor="middle">File CDN</text>
+
+  <rect x="180" y="575" width="100" height="30" fill="white" stroke="#ef4444" rx="5"/>
+  <text x="230" y="595" class="component" text-anchor="middle">Analytics</text>
+
+  <!-- Data Flow Arrows -->
+  
+  <!-- Frontend to Backend -->
+  <line x1="350" y1="200" x2="450" y2="200" class="flow"/>
+  <text x="400" y="195" class="component" text-anchor="middle">API Calls</text>
+
+  <!-- Backend to Database -->
+  <line x1="750" y1="200" x2="850" y2="200" class="data-flow"/>
+  <text x="800" y="195" class="component" text-anchor="middle">SQL Queries</text>
+
+  <!-- Auth Flow -->
+  <line x1="200" y1="190" x2="470" y2="130" class="auth-flow"/>
+  <text x="300" y="155" class="component" text-anchor="middle">Auth</text>
+
+  <!-- External Services -->
+  <line x1="200" y1="460" x2="200" y2="500" class="flow"/>
+  <text x="210" y="480" class="component" text-anchor="middle">External APIs</text>
+
+  <!-- Real-time Updates -->
+  <line x1="450" y1="240" x2="350" y2="240" class="data-flow"/>
+  <text x="400" y="235" class="component" text-anchor="middle">Real-time</text>
+
+  <!-- Legend -->
+  <rect x="50" y="650" width="500" height="120" fill="white" stroke="#6b7280" rx="5"/>
+  <text x="300" y="670" class="subtitle" text-anchor="middle">Architecture Legend</text>
+  
+  <rect x="70" y="680" width="20" height="15" class="frontend"/>
+  <text x="100" y="692" class="component">Frontend Components (React)</text>
+  
+  <rect x="70" y="700" width="20" height="15" class="backend"/>
+  <text x="100" y="712" class="component">Backend Services (Supabase)</text>
+  
+  <rect x="70" y="720" width="20" height="15" class="database"/>
+  <text x="100" y="732" class="component">Database Layer (PostgreSQL)</text>
+  
+  <rect x="70" y="740" width="20" height="15" class="external"/>
+  <text x="100" y="752" class="component">External Services</text>
+
+  <line x1="280" y1="687" x2="320" y2="687" class="flow"/>
+  <text x="330" y="692" class="component">Data Flow</text>
+  
+  <line x1="280" y1="707" x2="320" y2="707" class="auth-flow"/>
+  <text x="330" y="712" class="component">Authentication</text>
+  
+  <line x1="280" y1="727" x2="320" y2="727" class="data-flow"/>
+  <text x="330" y="732" class="component">Real-time Updates</text>
+
+  <!-- Component Explanations -->
+  <text x="600" y="650" class="subtitle" text-anchor="middle">Key Components</text>
+  <text x="600" y="670" class="component" text-anchor="middle">• ComplaintForm: Handles complaint submission with file uploads</text>
+  <text x="600" y="685" class="component" text-anchor="middle">• QRCodeManager: Generates QR codes for easy complaint reporting</text>
+  <text x="600" y="700" class="component" text-anchor="middle">• AnalyticsDashboard: Displays complaint statistics and trends</text>
+  <text x="600" y="715" class="component" text-anchor="middle">• Navigation: Multi-language navigation with role-based access</text>
+  <text x="600" y="730" class="component" text-anchor="middle">• Supabase: Handles auth, real-time updates, file storage</text>
+  <text x="600" y="745" class="component" text-anchor="middle">• PostgreSQL: Complaint data with RLS for security</text>
+</svg>

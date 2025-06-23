@@ -1,0 +1,158 @@
+
+# Dependabot configuration for Wang Sammo project
+# Automatically checks for dependency updates and creates pull requests
+
+version: 2
+updates:
+  # Enable version updates for npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Bangkok"
+    
+    # Limit the number of open pull requests
+    open-pull-requests-limit: 5
+    
+    # Commit message preferences
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    
+    # Pull request labels
+    labels:
+      - "dependencies"
+      - "automated"
+    
+    # Reviewers (optional - add your team members)
+    reviewers:
+      - "project-maintainer"
+    
+    # Assignees (optional)
+    assignees:
+      - "project-maintainer"
+    
+    # Allow specific dependency types
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
+    
+    # Ignore specific dependencies (if needed)
+    ignore:
+      # Ignore major version updates for these packages due to breaking changes
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      
+      # Ignore specific versions
+      - dependency-name: "@types/node"
+        versions: ["20.x"]
+    
+    # Vendor dependencies (if using vendored dependencies)
+    vendor: true
+    
+    # Rebase strategy
+    rebase-strategy: "auto"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Bangkok"
+    
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    
+    labels:
+      - "github-actions"
+      - "automated"
+    
+    reviewers:
+      - "project-maintainer"
+
+  # Enable version updates for Docker (if using Docker)
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Bangkok"
+    
+    commit-message:
+      prefix: "docker"
+      include: "scope"
+    
+    labels:
+      - "docker"
+      - "automated"
+
+# Groups for related dependencies (npm only)
+groups:
+  # Group React ecosystem updates
+  react:
+    patterns:
+      - "react*"
+      - "@types/react*"
+  
+  # Group testing dependencies
+  testing:
+    patterns:
+      - "*jest*"
+      - "*test*"
+      - "@testing-library/*"
+      - "vitest*"
+      - "playwright*"
+  
+  # Group build tools
+  build-tools:
+    patterns:
+      - "vite*"
+      - "@vitejs/*"
+      - "rollup*"
+      - "esbuild*"
+  
+  # Group linting and formatting tools
+  code-quality:
+    patterns:
+      - "eslint*"
+      - "@typescript-eslint/*"
+      - "prettier*"
+      - "husky*"
+      - "lint-staged*"
+  
+  # Group UI libraries
+  ui-libraries:
+    patterns:
+      - "@radix-ui/*"
+      - "lucide-react"
+      - "tailwindcss*"
+      - "@tailwindcss/*"
+  
+  # Group development dependencies
+  dev-dependencies:
+    dependency-type: "development"
+    update-types:
+      - "minor"
+      - "patch"
+
+# Ecosystem-specific configuration
+ecosystems:
+  npm:
+    # Automatically merge patch updates for development dependencies
+    auto-merge:
+      - dependency-type: "development"
+        update-type: "semver:patch"
+    
+    # Security updates
+    security-updates:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
