@@ -13,10 +13,11 @@ import { useToast } from '@/hooks/use-toast';
 import VoiceRecorder from './VoiceRecorder';
 import { supabase } from '@/integrations/supabase/client';
 
+type ComplaintCategory = 'road' | 'water' | 'waste' | 'electricity' | 'public_safety' | 'environment' | 'other';
+
 interface ComplaintFormData {
-  title: string;
   description: string;
-  category: string;
+  category: ComplaintCategory | '';
   location: string;
   phone: string;
   isAnonymous: boolean;
@@ -25,13 +26,13 @@ interface ComplaintFormData {
 }
 
 const categories = [
-  { value: 'road', icon: '🛣️' },
-  { value: 'water', icon: '💧' },
-  { value: 'waste', icon: '🗑️' },
-  { value: 'electricity', icon: '⚡' },
-  { value: 'public_safety', icon: '🚨' },
-  { value: 'environment', icon: '🌱' },
-  { value: 'other', icon: '📝' }
+  { value: 'road' as ComplaintCategory, icon: '🛣️' },
+  { value: 'water' as ComplaintCategory, icon: '💧' },
+  { value: 'waste' as ComplaintCategory, icon: '🗑️' },
+  { value: 'electricity' as ComplaintCategory, icon: '⚡' },
+  { value: 'public_safety' as ComplaintCategory, icon: '🚨' },
+  { value: 'environment' as ComplaintCategory, icon: '🌱' },
+  { value: 'other' as ComplaintCategory, icon: '📝' }
 ];
 
 const ComplaintForm = () => {
@@ -39,7 +40,6 @@ const ComplaintForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<ComplaintFormData>({
-    title: '',
     description: '',
     category: '',
     location: '',
@@ -109,13 +109,12 @@ const ComplaintForm = () => {
       // Get current user if not anonymous
       const { data: { user } } = await supabase.auth.getUser();
 
-      // Insert complaint
+      // Insert complaint - removed title field and ensured category is properly typed
       const { data: complaint, error } = await supabase
         .from('complaints')
         .insert({
-          title: formData.title,
           description: formData.description,
-          category: formData.category,
+          category: formData.category as ComplaintCategory,
           location_text: formData.location,
           phone: formData.isAnonymous ? formData.phone : null,
           photo_url: photoUrl,
@@ -144,7 +143,6 @@ const ComplaintForm = () => {
 
       // Reset form
       setFormData({
-        title: '',
         description: '',
         category: '',
         location: '',
@@ -190,26 +188,12 @@ const ComplaintForm = () => {
             />
           </div>
 
-          {/* Title */}
-          <div className="space-y-2">
-            <Label htmlFor="title">
-              {t('form.title')} <span className="text-red-500">*</span>
-            </Label>
-            <Input
-              id="title"
-              value={formData.title}
-              onChange={(e) => handleInputChange('title', e.target.value)}
-              placeholder="เช่น ถนนเป็นหลุมบ่อ ไฟฟ้าดับ"
-              required
-            />
-          </div>
-
           {/* Category */}
           <div className="space-y-2">
             <Label htmlFor="category">
               {t('form.category')} <span className="text-red-500">*</span>
             </Label>
-            <Select value={formData.category} onValueChange={(value) => handleInputChange('category', value)}>
+            <Select value={formData.category} onValueChange={(value: ComplaintCategory) => handleInputChange('category', value)}>
               <SelectTrigger>
                 <SelectValue placeholder="เลือกประเภทปัญหา" />
               </SelectTrigger>
@@ -307,7 +291,7 @@ const ComplaintForm = () => {
           {/* Submit Button */}
           <Button
             type="submit"
-            disabled={isSubmitting || !formData.title || !formData.description || !formData.category}
+            disabled={isSubmitting || !formData.description || !formData.category}
             className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600"
           >
             <Send size={16} className="mr-2" />
