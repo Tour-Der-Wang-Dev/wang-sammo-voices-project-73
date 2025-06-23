@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -11,13 +10,16 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { BarChart3, Filter, MessageSquareWarning, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 
+type ComplaintStatus = 'open' | 'in_progress' | 'resolved' | 'closed';
+type ComplaintCategory = 'road' | 'water' | 'waste' | 'electricity' | 'public_safety' | 'environment' | 'other';
+
 interface Complaint {
   id: string;
   complaint_id: string;
   title: string;
   description: string;
-  category: string;
-  status: string;
+  category: ComplaintCategory;
+  status: ComplaintStatus;
   created_at: string;
   user_id: string;
   priority: number;
@@ -31,8 +33,8 @@ const Dashboard = () => {
   const { toast } = useToast();
   const [complaints, setComplaints] = useState<Complaint[]>([]);
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<ComplaintStatus | 'all'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<ComplaintCategory | 'all'>('all');
   const [adminResponse, setAdminResponse] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -71,7 +73,7 @@ const Dashboard = () => {
     }
   };
 
-  const updateComplaintStatus = async (complaintId: string, newStatus: string) => {
+  const updateComplaintStatus = async (complaintId: string, newStatus: ComplaintStatus) => {
     try {
       const { error } = await supabase
         .from('complaints')
@@ -220,7 +222,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">สถานะ</label>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as ComplaintStatus | 'all')}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -235,7 +237,7 @@ const Dashboard = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-2">ประเภท</label>
-                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <Select value={categoryFilter} onValueChange={(value) => setCategoryFilter(value as ComplaintCategory | 'all')}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
