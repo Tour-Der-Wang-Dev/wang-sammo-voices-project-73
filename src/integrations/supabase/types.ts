@@ -258,7 +258,7 @@ export type Database = {
           priority: number | null
           resolved_at: string | null
           status: Database["public"]["Enums"]["complaint_status"] | null
-          title: string
+          title: string | null
           updated_at: string | null
           user_id: string | null
           voice_memo_url: string | null
@@ -280,7 +280,7 @@ export type Database = {
           priority?: number | null
           resolved_at?: string | null
           status?: Database["public"]["Enums"]["complaint_status"] | null
-          title: string
+          title?: string | null
           updated_at?: string | null
           user_id?: string | null
           voice_memo_url?: string | null
@@ -302,7 +302,7 @@ export type Database = {
           priority?: number | null
           resolved_at?: string | null
           status?: Database["public"]["Enums"]["complaint_status"] | null
-          title?: string
+          title?: string | null
           updated_at?: string | null
           user_id?: string | null
           voice_memo_url?: string | null

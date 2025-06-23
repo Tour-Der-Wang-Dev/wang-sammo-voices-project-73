@@ -88,6 +88,24 @@ const ComplaintForm = () => {
     return urlData.publicUrl;
   };
 
+  const generateTitle = (category: ComplaintCategory, description: string) => {
+    const categoryLabels = {
+      road: 'ปัญหาถนน',
+      water: 'ปัญหาน้ำประปา',
+      waste: 'ปัญหาขยะ',
+      electricity: 'ปัญหาไฟฟ้า',
+      public_safety: 'ปัญหาความปลอดภัย',
+      environment: 'ปัญหาสิ่งแวดล้อม',
+      other: 'ปัญหาอื่นๆ'
+    };
+    
+    const shortDescription = description.length > 50 
+      ? description.substring(0, 50) + '...' 
+      : description;
+    
+    return `${categoryLabels[category]}: ${shortDescription}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -109,10 +127,14 @@ const ComplaintForm = () => {
       // Get current user if not anonymous
       const { data: { user } } = await supabase.auth.getUser();
 
-      // Insert complaint - removed title field and ensured category is properly typed
+      // Generate title from category and description
+      const title = generateTitle(formData.category as ComplaintCategory, formData.description);
+
+      // Insert complaint
       const { data: complaint, error } = await supabase
         .from('complaints')
         .insert({
+          title: title,
           description: formData.description,
           category: formData.category as ComplaintCategory,
           location_text: formData.location,
